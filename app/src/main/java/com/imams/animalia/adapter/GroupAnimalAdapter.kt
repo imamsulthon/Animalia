@@ -1,4 +1,4 @@
-package com.imams.animalia
+package com.imams.animalia.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +7,14 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.imams.animalia.adapter.AnimalAdapter
+import com.imams.animalia.R
 import com.imams.animalia.databinding.ItemGroupBinding
+import com.imams.animals.model.Animal
 import com.imams.animals.model.GroupAnimal
 
 class GroupAnimalAdapter(
-    callback: (String) -> Unit,
+    private val onClickGroup: (String) -> Unit,
+    private val onClickItem: (Animal) -> Unit,
 ): PagingDataAdapter<GroupAnimal, GroupAnimalAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     companion object {
@@ -29,7 +31,7 @@ class GroupAnimalAdapter(
 
     inner class ViewHolder(private val binding: ItemGroupBinding): RecyclerView.ViewHolder(binding.root) {
 
-        private val adapter by lazy { AnimalAdapter(listOf()) }
+        private val adapter by lazy { AnimalAdapter(listOf(), callback = { onClickItem.invoke(it) }) }
 
         fun bind(item: GroupAnimal) {
             with(binding) {
@@ -37,8 +39,11 @@ class GroupAnimalAdapter(
                 recyclerView.layoutManager = LinearLayoutManager(binding.recyclerView.context, LinearLayoutManager.VERTICAL, false)
                 recyclerView.adapter = adapter
                 val maxSize = 6
-                adapter.submit(item.list.take(maxSize))
                 if (item.list.size > maxSize) tvSeeMore.visibility = View.VISIBLE else tvSeeMore.visibility = View.GONE
+                adapter.submit(item.list.take(maxSize))
+            }
+            itemView.setOnClickListener {
+                onClickGroup.invoke(item.group)
             }
         }
     }

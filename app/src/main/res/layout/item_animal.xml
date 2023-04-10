@@ -48,4 +48,13 @@
         app:layout_constraintTop_toBottomOf="@id/tv_taxonomies"
         tools:text="Animal Name" />
 
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/purple_200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_location" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

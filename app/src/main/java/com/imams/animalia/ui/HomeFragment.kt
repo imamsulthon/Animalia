@@ -1,5 +1,6 @@
 package com.imams.animalia.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.imams.animalia.GroupAnimalAdapter
+import com.imams.animalia.adapter.GroupAnimalAdapter
 import com.imams.animalia.databinding.FragmentHomeBinding
 import com.imams.animalia.viewmodel.HomeViewModel
+import com.imams.animals.mapper.ModelMapper.toJson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,9 +23,15 @@ class HomeFragment: Fragment() {
     private val binding get() = _binding!!
 
     private val adapter: GroupAnimalAdapter by lazy {
-        GroupAnimalAdapter(callback = {
-
-        })
+        GroupAnimalAdapter(
+            onClickGroup = {
+            },
+            onClickItem = {
+                requireActivity().startActivity(Intent(requireActivity(), DetailActivity::class.java).apply {
+                    putExtra(DetailActivity.TAG, it.toJson())
+                })
+            }
+        )
     }
 
     override fun onCreateView(
@@ -49,7 +57,11 @@ class HomeFragment: Fragment() {
     private fun initView() {
         with(binding) {
 
-            swipeRefresh.setOnRefreshListener { fetchData() }
+            swipeRefresh.setOnRefreshListener {
+                fetchData()
+                swipeRefresh.isRefreshing = false
+                etQuery.text = null
+            }
 
             btnTry.setOnClickListener {
                 viewModel.getAnimals(etQuery.text.toString())
@@ -61,19 +73,21 @@ class HomeFragment: Fragment() {
     }
 
     private fun fetchData() {
+        adapter.refresh()
         viewModel.getSelectedAnimals()
     }
 
     private fun initLiveData() {
         viewModel.loading.observe(viewLifecycleOwner) {
             it?.let {
-                if (it) {
-                    binding.swipeRefresh.isEnabled = false
-                    binding.swipeRefresh.isRefreshing = true
-                } else {
-                    binding.swipeRefresh.isEnabled = true
-                    binding.swipeRefresh.isRefreshing = false
-                }
+                binding.swipeRefresh.isEnabled = !it
+            }
+        }
+
+        viewModel.animals.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.refresh()
+                adapter.submitData(lifecycle, it)
             }
         }
 
@@ -82,6 +96,5 @@ class HomeFragment: Fragment() {
         }
 
     }
-
 
 }

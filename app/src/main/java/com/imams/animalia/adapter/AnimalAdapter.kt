@@ -10,7 +10,8 @@ import com.imams.animalia.databinding.ItemAnimalBinding
 import com.imams.animals.model.Animal
 
 class AnimalAdapter(
-    private var list: List<Animal>
+    private var list: List<Animal>,
+    private val callback: (Animal) -> Unit,
 ): RecyclerView.Adapter<AnimalAdapter.ViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
@@ -26,6 +27,9 @@ class AnimalAdapter(
                 tvName.text = item.name
                 tvLocation.text = "${item.locations.take(3)}"
                 tvTaxonomies.text = item.taxonomy.family
+            }
+            itemView.setOnClickListener {
+                callback.invoke(item)
             }
         }
     }

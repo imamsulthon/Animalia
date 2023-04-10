@@ -9,4 +9,6 @@ data class Animal(
     var taxonomy: Taxonomy,
     var locations: List<String>,
     var characteristics: Characteristic
-): Parcelable
+): Parcelable {
+    constructor(): this("", Taxonomy(), listOf(), Characteristic())
+}

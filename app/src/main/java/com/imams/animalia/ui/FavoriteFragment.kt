@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.imams.animalia.GroupAnimalAdapter
+import com.imams.animalia.adapter.GroupAnimalAdapter
 import com.imams.animalia.databinding.FragmentFavoriteBinding
 import com.imams.animalia.viewmodel.FavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,9 +21,14 @@ class FavoriteFragment: Fragment() {
     private val binding get() = _binding!!
 
     private val adapter: GroupAnimalAdapter by lazy {
-        GroupAnimalAdapter(callback = {
-
-        })
+        GroupAnimalAdapter(
+            onClickGroup = {
+                // todo
+            },
+            onClickItem = {
+                // todo
+            }
+        )
     }
 
     override fun onCreateView(

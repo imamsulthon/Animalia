@@ -19,8 +19,8 @@ class HomeViewModel @Inject constructor(
     private val mainAnimalUseCase: MainAnimalUseCase,
 ): ViewModel() {
 
-    private val _animals = MutableLiveData<List<Animal>>()
-    val animals: LiveData<List<Animal>> = _animals
+    private val _animals = MutableLiveData<PagingData<GroupAnimal>>()
+    val animals: LiveData<PagingData<GroupAnimal>> = _animals
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
@@ -28,10 +28,15 @@ class HomeViewModel @Inject constructor(
     private val _animals2 = MutableLiveData<PagingData<GroupAnimal>>()
     val animals2: LiveData<PagingData<GroupAnimal>> = _animals2
 
-    fun getAnimals(name: String = "fox") {
+    fun getAnimals(name: String? = "") {
+        if (name.isNullOrEmpty()) {
+            getSelectedAnimals()
+            return
+        }
        viewModelScope.launch {
            val search = mainAnimalUseCase.getAnimal(name)
-           _animals.postValue(search)
+           val result = listOf(GroupAnimal(name, search))
+           _animals.postValue(PagingData.from(result))
        }
     }
 
