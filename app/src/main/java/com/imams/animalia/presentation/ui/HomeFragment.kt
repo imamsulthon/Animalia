@@ -1,4 +1,4 @@
-package com.imams.animalia.ui
+package com.imams.animalia.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.imams.animalia.adapter.GroupAnimalAdapter
+import com.imams.animalia.presentation.adapter.GroupAnimalAdapter
 import com.imams.animalia.databinding.FragmentHomeBinding
-import com.imams.animalia.viewmodel.HomeViewModel
+import com.imams.animalia.presentation.viewmodel.HomeViewModel
 import com.imams.animals.mapper.ModelMapper.toJson
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -1,4 +1,4 @@
-package com.imams.animalia.ui
+package com.imams.animalia.presentation.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

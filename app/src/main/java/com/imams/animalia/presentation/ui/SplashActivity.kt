@@ -1,4 +1,4 @@
-package com.imams.animalia.ui
+package com.imams.animalia.presentation.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent

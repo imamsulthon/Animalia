@@ -1,4 +1,4 @@
-package com.imams.animalia.viewmodel
+package com.imams.animalia.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

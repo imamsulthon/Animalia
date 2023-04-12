@@ -1,4 +1,4 @@
-package com.imams.animalia.adapter
+package com.imams.animalia.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

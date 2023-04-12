@@ -32,13 +32,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:text="See More result for Whale"
         android:textSize="12sp"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerView"
-        tools:text="See More result for Whale"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
