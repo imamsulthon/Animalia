@@ -25,15 +25,10 @@ class DetailActivity : AppCompatActivity() {
 
     private fun getDataArgs() {
         val animalS: String? = intent?.getStringExtra(TAG)
-        printLog("args $animalS")
         animalS?.let {
             animal = animalS.asAnimal()
             animal?.let { setContent(it) }
         }
-    }
-
-    private fun printLog(msg: String) {
-        println("DetailFragment $msg")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +59,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setAsFavorite(favorite: Boolean) = with(binding) {
-        printLog("setAsFavorite $favorite")
         btnFavorite.setImageResource(
             if (favorite) R.drawable.ic_favorite_true
             else R.drawable.ic_favorite_false

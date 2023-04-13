@@ -8,7 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.imams.animalia.databinding.FragmentFavoriteBinding
 import com.imams.animalia.presentation.adapter.AnimalAdapter
+import com.imams.animalia.presentation.gone
 import com.imams.animalia.presentation.viewmodel.GroupListViewModel
+import com.imams.animalia.presentation.visible
 import com.imams.animals.mapper.ModelMapper.toJson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -46,6 +48,7 @@ class GroupListActivity: AppCompatActivity() {
 
     private fun initView() {
         with(binding) {
+            showSkeleton(true)
             swipeRefresh.setOnRefreshListener {
                 fetchData()
                 swipeRefresh.isRefreshing = false
@@ -64,11 +67,25 @@ class GroupListActivity: AppCompatActivity() {
     }
 
     private fun initLiveData() {
+        viewModel.loading.observe(this) {
+            it?.let { showSkeleton(it) }
+        }
 
         viewModel.animals.observe(this) {
             it?.let { adapter.submit(it) }
         }
+    }
 
+    private fun showSkeleton(show: Boolean) {
+        with(binding) {
+            if (show) {
+                shimmerSkeleton.visible()
+                swipeRefresh.gone()
+            } else {
+                shimmerSkeleton.gone()
+                swipeRefresh.visible()
+            }
+        }
     }
 
 }

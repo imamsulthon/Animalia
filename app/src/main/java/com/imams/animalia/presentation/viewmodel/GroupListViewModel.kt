@@ -15,19 +15,19 @@ class GroupListViewModel @Inject constructor(
     private val mainAnimalUseCase: MainAnimalUseCase
 ): ViewModel() {
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
     private val _animals = MutableLiveData<List<Animal>>()
     val animals: LiveData<List<Animal>> = _animals
 
     fun getAnimals(name: String) {
         viewModelScope.launch {
+            _loading.postValue(true)
             val result = mainAnimalUseCase.getAnimal(name)
-            printLog("animals: $result")
             _animals.postValue(result)
+            _loading.postValue(false)
         }
-    }
-
-    private fun printLog(msg: String) {
-        println("DetailVM: $msg")
     }
 
 }
