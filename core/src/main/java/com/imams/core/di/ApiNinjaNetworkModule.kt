@@ -1,11 +1,9 @@
-package com.imams.animals.di.module
+package com.imams.core.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.imams.animals.BuildConfig
-import com.imams.animals.di.Animalia
-import com.imams.animals.util.Constant
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.imams.core.BuildConfig
+import com.imams.core.utils.Constant
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,8 +11,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -22,18 +18,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiNinjaNetworkModule {
-
-    @Provides
-    @Singleton
-    @Animalia
-    fun retrofitClient(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(Constant.BaseURLNinja)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .client(client)
-            .build()
-    }
 
     @Provides
     @Singleton

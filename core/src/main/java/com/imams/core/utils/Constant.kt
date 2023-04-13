@@ -1,4 +1,4 @@
-package com.imams.animals.util
+package com.imams.core.utils
 
 object Constant {
 

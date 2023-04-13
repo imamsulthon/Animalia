@@ -11,10 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.imams.animalia.databinding.FragmentFavoriteBinding
 import com.imams.animalia.presentation.adapter.AnimalAdapter
+import com.imams.animalia.presentation.gone
 import com.imams.animalia.presentation.viewmodel.FavoriteViewModel
+import com.imams.animalia.presentation.visible
 import com.imams.animals.mapper.ModelMapper.toJson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -56,6 +57,8 @@ class FavoriteFragment: Fragment() {
 
     private fun initView() {
         with(binding) {
+            shimmerSkeleton.gone()
+            swipeRefresh.visible()
             swipeRefresh.setOnRefreshListener {
                 fetchData()
                 swipeRefresh.isRefreshing = false

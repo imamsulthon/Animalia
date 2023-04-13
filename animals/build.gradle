@@ -65,12 +65,11 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$version_logging_interceptor"
     implementation "com.squareup.okhttp3:logging-interceptor:$version_logging_interceptor"
 
-    // Checker interceptor
-    debugImplementation "com.github.chuckerteam.chucker:library:$version_chucker"
-    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$version_chucker"
-
     // room
     implementation "androidx.room:room-runtime:$version_room"
     implementation "androidx.room:room-ktx:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
+
+    implementation(project(":core"))
+
 }
