@@ -56,11 +56,11 @@ class HomeViewModel @Inject constructor(
 
             val groups = listOf(
                 GroupAnimal("Elephant", elephant.getCompleted()),
-                GroupAnimal("lions", lions.getCompleted()),
-                GroupAnimal("Foxes", foxes.await()),
-                GroupAnimal("Dogs", dogs.await()),
-                GroupAnimal("Sharks", sharks.await()),
-                GroupAnimal("Turtles", turtles.await()),
+                GroupAnimal("Lion", lions.getCompleted()),
+                GroupAnimal("Fox", foxes.await()),
+                GroupAnimal("Dog", dogs.await()),
+                GroupAnimal("Shark", sharks.await()),
+                GroupAnimal("Turtle", turtles.await()),
             )
 
             val pagingAnimals = PagingData.from(groups)

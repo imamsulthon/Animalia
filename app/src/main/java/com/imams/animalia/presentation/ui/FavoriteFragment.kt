@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.imams.animalia.databinding.FragmentFavoriteBinding
 import com.imams.animalia.presentation.adapter.AnimalAdapter
 import com.imams.animalia.presentation.viewmodel.FavoriteViewModel
 import com.imams.animals.mapper.ModelMapper.toJson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FavoriteFragment: Fragment() {
@@ -53,7 +56,10 @@ class FavoriteFragment: Fragment() {
 
     private fun initView() {
         with(binding) {
-            swipeRefresh.setOnRefreshListener { fetchData() }
+            swipeRefresh.setOnRefreshListener {
+                fetchData()
+                swipeRefresh.isRefreshing = false
+            }
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerView.adapter = adapter
         }
@@ -65,7 +71,9 @@ class FavoriteFragment: Fragment() {
     }
 
     private fun fetchData() {
-        viewModel.getSelectedAnimals()
+        lifecycleScope.launch {
+            viewModel.getSelectedAnimals()
+        }
     }
 
     private fun initLiveData() {

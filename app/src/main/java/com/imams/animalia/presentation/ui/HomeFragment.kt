@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.imams.animalia.presentation.adapter.GroupAnimalAdapter
 import com.imams.animalia.databinding.FragmentHomeBinding
+import com.imams.animalia.presentation.adapter.GroupAnimalAdapter
 import com.imams.animalia.presentation.viewmodel.HomeViewModel
 import com.imams.animals.mapper.ModelMapper.toJson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment: Fragment() {
+class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -25,11 +25,16 @@ class HomeFragment: Fragment() {
     private val adapter: GroupAnimalAdapter by lazy {
         GroupAnimalAdapter(
             onClickGroup = {
+                requireActivity().startActivity(
+                    Intent(requireActivity(), GroupListActivity::class.java).apply {
+                        putExtra(GroupListActivity.TAG, it)
+                    })
             },
             onClickItem = {
-                requireActivity().startActivity(Intent(requireActivity(), DetailActivity::class.java).apply {
-                    putExtra(DetailActivity.TAG, it.toJson())
-                })
+                requireActivity().startActivity(
+                    Intent(requireActivity(), DetailActivity::class.java).apply {
+                        putExtra(DetailActivity.TAG, it.toJson())
+                    })
             }
         )
     }
@@ -67,7 +72,8 @@ class HomeFragment: Fragment() {
                 viewModel.getAnimals(etQuery.text.toString())
             }
 
-            recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            recyclerView.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerView.adapter = adapter
         }
     }

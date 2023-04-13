@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.imams.animalia.R
 import com.imams.animalia.databinding.ItemGroupBinding
+import com.imams.animalia.presentation.plurals
 import com.imams.animals.model.Animal
 import com.imams.animals.model.GroupAnimal
 
@@ -35,7 +36,7 @@ class GroupAnimalAdapter(
 
         fun bind(item: GroupAnimal) {
             with(binding) {
-                tvGroupName.text = item.group
+                tvGroupName.text = item.group.plurals()
                 recyclerView.layoutManager = LinearLayoutManager(binding.recyclerView.context, LinearLayoutManager.VERTICAL, false)
                 recyclerView.adapter = adapter
                 val maxSize = 6

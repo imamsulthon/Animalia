@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.imams.animalia.presentation.ui.DetailActivity" />
+        <activity android:name="com.imams.animalia.presentation.ui.GroupListActivity" />
     </application>
 
 </manifest>

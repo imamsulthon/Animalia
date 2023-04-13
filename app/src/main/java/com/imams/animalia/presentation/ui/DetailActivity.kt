@@ -7,6 +7,7 @@ import com.imams.animalia.R
 import com.imams.animalia.databinding.FragmentDetailBinding
 import com.imams.animalia.presentation.viewmodel.DetailViewModel
 import com.imams.animals.mapper.ModelMapper.asAnimal
+import com.imams.animals.mapper.ModelMapper.toLabel
 import com.imams.animals.model.Animal
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,8 +58,8 @@ class DetailActivity : AppCompatActivity() {
         with(binding) {
             tvName.text = animal.name
             tvLocations.text = animal.locations.toString()
-            tvCharacteristic.text = animal.characteristics.toString()
-            tvTaxonomy.text = animal.taxonomy.toString()
+            tvCharacteristic.text = animal.characteristics.toLabel()
+            tvTaxonomy.text = animal.taxonomy.toLabel()
         }
     }
 
