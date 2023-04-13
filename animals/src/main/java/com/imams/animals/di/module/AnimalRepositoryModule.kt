@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.imams.animals.di.Animalia
 import com.imams.animals.repository.AnimalRepository
 import com.imams.animals.repository.AnimalRepositoryImpl
-import com.imams.animals.source.local.AppDatabase
+import com.imams.animals.source.local.AnimaliaDatabase
 import com.imams.animals.source.local.FavoriteAnimalDao
 import com.imams.animals.source.remote.api.AnimalApi
 import com.imams.core.utils.Constant
@@ -50,10 +50,10 @@ object AnimalRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(app: Application): AppDatabase {
+    fun provideAppDatabase(app: Application): AnimaliaDatabase {
         return Room.databaseBuilder(
             app,
-            AppDatabase::class.java,
+            AnimaliaDatabase::class.java,
             "animal_database"
         ).fallbackToDestructiveMigration()
             .build()
@@ -61,7 +61,7 @@ object AnimalRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideUserFavoriteDao(database: AppDatabase): FavoriteAnimalDao {
+    fun provideUserFavoriteDao(database: AnimaliaDatabase): FavoriteAnimalDao {
         return database.animalFavoriteDao()
     }
 

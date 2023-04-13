@@ -6,16 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.imams.animalia.domain.MainAnimalUseCase
+import com.imams.animalia.domain.SelectedAnimalsSourceFlow
 import com.imams.animalia.domain.SelectedAnimalsUseCase
 import com.imams.animals.model.GroupAnimal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val selectedAnimalsUseCase: SelectedAnimalsUseCase,
+    private val listAnimalsUseCase: SelectedAnimalsUseCase,
+    private val flowUseCase: SelectedAnimalsSourceFlow,
     private val mainAnimalUseCase: MainAnimalUseCase,
 ): ViewModel() {
 
@@ -28,9 +31,9 @@ class HomeViewModel @Inject constructor(
     private val _animals2 = MutableLiveData<PagingData<GroupAnimal>>()
     val animals2: LiveData<PagingData<GroupAnimal>> = _animals2
 
-    fun getAnimals(name: String? = "") {
+    fun getAnimals(name: String?) {
         if (name.isNullOrEmpty()) {
-            getSelectedAnimals()
+            getAnimalsAsAsync()
             return
         }
        viewModelScope.launch {
@@ -42,17 +45,17 @@ class HomeViewModel @Inject constructor(
        }
     }
 
-    fun getSelectedAnimals() {
+    fun getAnimalsAsAsync() {
         viewModelScope.launch {
             _loading.postValue(true)
-            val elephant = async { selectedAnimalsUseCase.getElephant() }
-            val lions = async { selectedAnimalsUseCase.getLion() }
-            val foxes = async { selectedAnimalsUseCase.getFox() }
-            val dogs = async { selectedAnimalsUseCase.getDog() }
-            val sharks = async { selectedAnimalsUseCase.getShark() }
-            val turtles = async { selectedAnimalsUseCase.getTurtle() }
-            val whales = async { selectedAnimalsUseCase.getWhale() }
-            val penguin = async { selectedAnimalsUseCase.getPenguin() }
+            val elephant = async { listAnimalsUseCase.getElephant() }
+            val lions = async { listAnimalsUseCase.getLion() }
+            val foxes = async { listAnimalsUseCase.getFox() }
+            val dogs = async { listAnimalsUseCase.getDog() }
+            val sharks = async { listAnimalsUseCase.getShark() }
+            val turtles = async { listAnimalsUseCase.getTurtle() }
+            val whales = async { listAnimalsUseCase.getWhale() }
+            val penguin = async { listAnimalsUseCase.getPenguin() }
 
             val groups = listOf(
                 GroupAnimal("Elephant", elephant.await()),
@@ -70,6 +73,48 @@ class HomeViewModel @Inject constructor(
             _loading.postValue(false)
 
             printLog("joint $animals $this")
+        }
+    }
+
+    fun getAnimalsAsSingleFlow() {
+        viewModelScope.launch {
+            _loading.postValue(false)
+            val groups = mutableListOf<GroupAnimal>()
+            flowUseCase.getAllAnimals().collect {
+                groups.add(it)
+                _animals2.postValue(PagingData.from(groups))
+            }
+        }
+    }
+
+    private fun getAnimalsAsCollectedFlow() {
+        viewModelScope.launch {
+            _loading.postValue(false)
+            val groups = mutableListOf<GroupAnimal>()
+            flowUseCase.getElephant().collectLatest {
+                groups.add(it)
+                _animals2.postValue(PagingData.from(groups))
+            }
+            flowUseCase.getLion().collectLatest {
+                groups.add(it)
+                _animals2.postValue(PagingData.from(groups))
+            }
+            flowUseCase.getFox().collectLatest {
+                groups.add(it)
+                _animals2.postValue(PagingData.from(groups))
+            }
+            flowUseCase.getDog().collectLatest {
+                groups.add(it)
+                _animals2.postValue(PagingData.from(groups))
+            }
+            flowUseCase.getShark().collectLatest {
+                groups.add(it)
+                _animals2.postValue(PagingData.from(groups))
+            }
+            flowUseCase.getTurtle().collectLatest {
+                groups.add(it)
+                _animals2.postValue(PagingData.from(groups))
+            }
         }
     }
 

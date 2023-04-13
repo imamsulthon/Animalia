@@ -71,7 +71,8 @@ class HomeFragment : Fragment() {
             }
 
             btnTry.setOnClickListener {
-                viewModel.getAnimals(etQuery.text.toString())
+                val q = etQuery.text.toString()
+                viewModel.getAnimals(q)
             }
 
             recyclerView.layoutManager =
@@ -82,7 +83,7 @@ class HomeFragment : Fragment() {
 
     private fun fetchData() {
         adapter.refresh()
-        viewModel.getSelectedAnimals()
+        viewModel.getAnimalsAsSingleFlow()
     }
 
     private fun initLiveData() {

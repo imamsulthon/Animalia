@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
     version = 1,
     exportSchema = false,
 )
-abstract class AppDatabase: RoomDatabase() {
+abstract class AnimaliaDatabase: RoomDatabase() {
 
     abstract fun animalFavoriteDao(): FavoriteAnimalDao
 
