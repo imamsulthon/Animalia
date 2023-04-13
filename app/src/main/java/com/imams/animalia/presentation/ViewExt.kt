@@ -1,3 +1,13 @@
 package com.imams.animalia.presentation
 
-fun String.plurals(): String = this + if (this.last().equals("x")) "es" else "s"
+import android.view.View
+
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun String.plurals(): String = this + if (this.last().equals('x', false)) "es" else "s"

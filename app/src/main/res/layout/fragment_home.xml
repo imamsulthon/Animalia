@@ -28,15 +28,36 @@
         app:layout_constraintStart_toEndOf="@id/et_query"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_skeleton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_query"
+        tools:visibility="visible">
+
+        <include layout="@layout/skeleton_list" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:shimmer_shape="radial"
+        app:shimmer_duration="1000"
+        app:shimmer_auto_start="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_query">
+        app:layout_constraintTop_toBottomOf="@id/et_query"
+        tools:visibility="gone">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

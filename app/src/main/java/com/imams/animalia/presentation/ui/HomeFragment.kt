@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.imams.animalia.databinding.FragmentHomeBinding
 import com.imams.animalia.presentation.adapter.GroupAnimalAdapter
+import com.imams.animalia.presentation.gone
 import com.imams.animalia.presentation.viewmodel.HomeViewModel
+import com.imams.animalia.presentation.visible
 import com.imams.animals.mapper.ModelMapper.toJson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -86,6 +88,7 @@ class HomeFragment : Fragment() {
     private fun initLiveData() {
         viewModel.loading.observe(viewLifecycleOwner) {
             it?.let {
+                showSkeleton(it)
                 binding.swipeRefresh.isEnabled = !it
             }
         }
@@ -101,6 +104,18 @@ class HomeFragment : Fragment() {
             it?.let { adapter.submitData(lifecycle, it) }
         }
 
+    }
+
+    private fun showSkeleton(show: Boolean) {
+        with(binding) {
+            if (show) {
+                shimmerSkeleton.visible()
+                swipeRefresh.gone()
+            } else {
+                shimmerSkeleton.gone()
+                swipeRefresh.visible()
+            }
+        }
     }
 
 }

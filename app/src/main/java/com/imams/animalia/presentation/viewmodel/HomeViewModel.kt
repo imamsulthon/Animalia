@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.imams.animalia.domain.MainAnimalUseCase
 import com.imams.animalia.domain.SelectedAnimalsUseCase
-import com.imams.animals.model.Animal
 import com.imams.animals.model.GroupAnimal
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,15 +34,17 @@ class HomeViewModel @Inject constructor(
             return
         }
        viewModelScope.launch {
+           _loading.postValue(true)
            val search = mainAnimalUseCase.getAnimal(name)
            val result = listOf(GroupAnimal(name, search))
            _animals.postValue(PagingData.from(result))
+           _loading.postValue(false)
        }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun getSelectedAnimals() {
         viewModelScope.launch {
+            _loading.postValue(true)
             val elephant = async { selectedAnimalsUseCase.getElephant() }
             val lions = async { selectedAnimalsUseCase.getLion() }
             val foxes = async { selectedAnimalsUseCase.getFox() }
@@ -52,19 +54,20 @@ class HomeViewModel @Inject constructor(
             val whales = async { selectedAnimalsUseCase.getWhale() }
             val penguin = async { selectedAnimalsUseCase.getPenguin() }
 
-            val animals: List<Animal> = awaitAll(elephant,lions, foxes, dogs, sharks, whales, turtles, penguin).flatten()
-
             val groups = listOf(
-                GroupAnimal("Elephant", elephant.getCompleted()),
-                GroupAnimal("Lion", lions.getCompleted()),
+                GroupAnimal("Elephant", elephant.await()),
+                GroupAnimal("Lion", lions.await()),
                 GroupAnimal("Fox", foxes.await()),
                 GroupAnimal("Dog", dogs.await()),
                 GroupAnimal("Shark", sharks.await()),
                 GroupAnimal("Turtle", turtles.await()),
+                GroupAnimal("Whale", whales.await()),
+                GroupAnimal("Penguin", penguin.await()),
             )
 
             val pagingAnimals = PagingData.from(groups)
             _animals2.postValue(pagingAnimals)
+            _loading.postValue(false)
 
             printLog("joint $animals $this")
         }
