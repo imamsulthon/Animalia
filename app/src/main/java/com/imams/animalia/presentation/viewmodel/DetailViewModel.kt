@@ -26,10 +26,8 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun isFavorite(name: String) {
-        printLog("isFavorite $name")
         viewModelScope.launch {
             favoriteUseCase.isFavorite(name).collectLatest {
-                printLog("isFavorite $it")
                 _isFavorite.postValue(it)
             }
         }

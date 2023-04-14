@@ -31,7 +31,6 @@ class GroupListActivity: AppCompatActivity() {
 
     private val adapter by lazy {
         AnimalAdapter(listOf(), callback = {
-            printLog("animal $it")
             startActivity(Intent(this, DetailActivity::class.java).apply {
                 putExtra(DetailActivity.TAG, it.toJson())
             })

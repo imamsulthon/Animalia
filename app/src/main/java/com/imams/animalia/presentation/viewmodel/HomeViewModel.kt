@@ -34,16 +34,14 @@ class HomeViewModel @Inject constructor(
 
     fun getAnimals() {
         getAnimalsAsAsync()
-        getAnimalsAsSingleFlow()
-        getAnimalsAsCollectedFlow()
+//        getAnimalsAsSingleFlow()
+//        getAnimalsAsCollectedFlow()
     }
 
     fun getAnimals(name: String?) {
         if (name.isNullOrEmpty()) {
-            printLog("getAnimals null")
             return
         }
-        printLog("getAnimals $name")
         viewModelScope.launch {
             _loading.postValue(true)
             val search = mainAnimalUseCase.getAnimal(name)
