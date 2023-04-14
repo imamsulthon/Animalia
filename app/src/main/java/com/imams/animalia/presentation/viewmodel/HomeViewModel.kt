@@ -20,10 +20,10 @@ class HomeViewModel @Inject constructor(
     private val listAnimalsUseCase: SelectedAnimalsUseCase,
     private val flowUseCase: SelectedAnimalsSourceFlow,
     private val mainAnimalUseCase: MainAnimalUseCase,
-): ViewModel() {
+) : ViewModel() {
 
-    private val _animals = MutableLiveData<PagingData<GroupAnimal>>()
-    val animals: LiveData<PagingData<GroupAnimal>> = _animals
+    private val _animalsSearchResult = MutableLiveData<PagingData<GroupAnimal>>()
+    val animalsSearchResult: LiveData<PagingData<GroupAnimal>> = _animalsSearchResult
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
@@ -31,21 +31,29 @@ class HomeViewModel @Inject constructor(
     private val _animals2 = MutableLiveData<PagingData<GroupAnimal>>()
     val animals2: LiveData<PagingData<GroupAnimal>> = _animals2
 
-    fun getAnimals(name: String?) {
-        if (name.isNullOrEmpty()) {
-            getAnimalsAsAsync()
-            return
-        }
-       viewModelScope.launch {
-           _loading.postValue(true)
-           val search = mainAnimalUseCase.getAnimal(name)
-           val result = listOf(GroupAnimal(name, search))
-           _animals.postValue(PagingData.from(result))
-           _loading.postValue(false)
-       }
+
+    fun getAnimals() {
+        getAnimalsAsAsync()
+        getAnimalsAsSingleFlow()
+        getAnimalsAsCollectedFlow()
     }
 
-    fun getAnimalsAsAsync() {
+    fun getAnimals(name: String?) {
+        if (name.isNullOrEmpty()) {
+            printLog("getAnimals null")
+            return
+        }
+        printLog("getAnimals $name")
+        viewModelScope.launch {
+            _loading.postValue(true)
+            val search = mainAnimalUseCase.getAnimal(name)
+            val result = listOf(GroupAnimal(name, search))
+            _animalsSearchResult.postValue(PagingData.from(result))
+            _loading.postValue(false)
+        }
+    }
+
+    private fun getAnimalsAsAsync() {
         viewModelScope.launch {
             _loading.postValue(true)
             val elephant = async { listAnimalsUseCase.getElephant() }
@@ -72,11 +80,10 @@ class HomeViewModel @Inject constructor(
             _animals2.postValue(pagingAnimals)
             _loading.postValue(false)
 
-            printLog("joint $animals $this")
         }
     }
 
-    fun getAnimalsAsSingleFlow() {
+    private fun getAnimalsAsSingleFlow() {
         viewModelScope.launch {
             _loading.postValue(false)
             val groups = mutableListOf<GroupAnimal>()

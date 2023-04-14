@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.imams.animalia.databinding.FragmentFavoriteBinding
 import com.imams.animalia.presentation.adapter.AnimalAdapter
@@ -47,7 +49,6 @@ class FavoriteFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initLiveData()
-        fetchData()
     }
 
     override fun onDestroyView() {
@@ -60,7 +61,7 @@ class FavoriteFragment: Fragment() {
             shimmerSkeleton.gone()
             swipeRefresh.visible()
             swipeRefresh.setOnRefreshListener {
-                fetchData()
+                initLiveData()
                 swipeRefresh.isRefreshing = false
             }
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -68,20 +69,13 @@ class FavoriteFragment: Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getSelectedAnimals()
-    }
-
-    private fun fetchData() {
-        lifecycleScope.launch {
-            viewModel.getSelectedAnimals()
-        }
-    }
-
     private fun initLiveData() {
-        viewModel.animals.observe(viewLifecycleOwner) {
-            it?.let { adapter.submit(it) }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.getSelectedAnimals().observe(viewLifecycleOwner) {
+                    it?.let { adapter.submit(it) }
+                }
+            }
         }
     }
 

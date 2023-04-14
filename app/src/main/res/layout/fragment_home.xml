@@ -5,24 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/et_query"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        android:hint="Search Animals"
-        app:layout_constraintEnd_toStartOf="@id/btn_try"
+        android:backgroundTint="@color/purple_200"
+        android:hint="@string/app_name"
+        app:iconifiedByDefault="false"
+        app:layout_constraintBottom_toBottomOf="@id/btn_sort"
+        app:layout_constraintEnd_toStartOf="@id/btn_sort"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/btn_sort"
+        app:queryHint="Search Animals" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_try"
+        android:id="@+id/btn_sort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        android:text="search"
+        android:text="Sort"
+        android:enabled="false"
+        android:backgroundTint="@color/purple_200"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/et_query"
@@ -50,13 +54,13 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:visibility="gone"
-        app:shimmer_shape="radial"
-        app:shimmer_duration="1000"
-        app:shimmer_auto_start="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_query"
+        app:shimmer_auto_start="true"
+        app:shimmer_duration="1000"
+        app:shimmer_shape="radial"
         tools:visibility="gone">
 
         <androidx.core.widget.NestedScrollView

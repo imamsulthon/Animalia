@@ -12,6 +12,9 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
+    private val firstFragment by lazy { HomeFragment() }
+    private val secondFragment by lazy { FavoriteFragment() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -20,9 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         with(binding) {
-
-            val firstFragment = HomeFragment()
-            val secondFragment = FavoriteFragment()
 
             setCurrentFragment(firstFragment)
 

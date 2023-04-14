@@ -2,9 +2,7 @@ package com.imams.animalia.domain
 
 import com.imams.animals.model.Animal
 import com.imams.animals.repository.AnimalRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class FavoriteUseCase @Inject constructor(
